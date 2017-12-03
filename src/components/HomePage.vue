@@ -9,79 +9,53 @@
       <div class="center">{{ msg }}</div>
     </v-ons-toolbar>
 
-    <div class="header">
-      <img src="../assets/logo.png">
+    <div class="center" v-if="!this.getLoadingStatus">
+      <v-ons-icon icon="ion-load-b" spin size="150px"></v-ons-icon>
     </div>
-
-    <v-ons-list-title>Vue.js Essential Links</v-ons-list-title>
-    <v-ons-list>
-      <v-ons-list-item v-for="item in essentialLinks" @click="goTo(item.link)" :key="item.link">
-        <div class="left"><v-ons-icon fixed-width :icon="item.icon"></v-ons-icon></div>
-        <div class="center">{{ item.label }}</div>
-        <div class="right"><v-ons-icon icon="fa-external-link"></v-ons-icon></div>
-      </v-ons-list-item>
-    </v-ons-list>
-
-    <v-ons-list-title>Vue.js Ecosystem</v-ons-list-title>
-    <v-ons-row>
-      <v-ons-col>
-        <v-ons-card @click="goTo('http://router.vuejs.org/')">vue-router</v-ons-card>
-      </v-ons-col>
-      <v-ons-col>
-        <v-ons-card @click="goTo('http://vuex.vuejs.org/')">vuex</v-ons-card>
-      </v-ons-col>
-    </v-ons-row>
-    <v-ons-row>
-      <v-ons-col>
-        <v-ons-card @click="goTo('http://vue-loader.vuejs.org/')">vue-loader</v-ons-card>
-      </v-ons-col>
-      <v-ons-col>
-        <v-ons-card @click="goTo('https://github.com/vuejs/awesome-vue')">awesome-vue</v-ons-card>
-      </v-ons-col>
-    </v-ons-row>
+    <CurrencyInfo
+     v-for="crypto in getCryptoData"
+     :key = "crypto.id"
+     :name = "crypto.name"
+     :symbol = "crypto.symbol"
+     :price_usd = "crypto.price_usd"
+     :price_btc = "crypto.price_btc"
+     :percent_change_1h = "crypto.percent_change_1h"
+     :percent_change_24h = "crypto.percent_change_24h"
+     :percent_change_7d = "crypto.percent_change_7d"
+     :last_updated = "crypto.last_updated"
+    ></CurrencyInfo>
 
   </v-ons-page>
 </template>
 
 <script>
+import CurrencyInfo from './CurrencyInfo.vue'
+import { mapGetters } from 'vuex'
 export default {
   name: 'home',
   data () {
     return {
-      msg: 'Welcome',
-      essentialLinks: [
-        {
-          label: 'Core Docs',
-          link: 'https://vuejs.org',
-          icon: 'fa-book'
-        },
-        {
-          label: 'Community Chat',
-          link: 'https://chat.vuejs.org',
-          icon: 'fa-commenting'
-        },
-        {
-          label: 'Forum',
-          link: 'https://forum.vuejs.org',
-          icon: 'ion-chatboxes'
-        },
-        {
-          label: 'Twitter',
-          link: 'https://twitter.com/vuejs',
-          icon: 'fa-twitter'
-        },
-        {
-          label: 'Docs for this template',
-          link: 'http://vuejs-templates.github.io/webpack/',
-          icon: 'fa-file-text'
-        }
-      ]
+      msg: 'kryptAPPcjusz'
     }
+  },
+  components: {
+    CurrencyInfo
+  },
+  computed: {
+    ...mapGetters([
+      'getCryptoData',
+      'getLoadingStatus',
+      'getMockData'
+    ])
   },
   methods: {
     goTo (url) {
       window.open(url, '_blank')
     }
+  },
+  created () {
+    // this.$store.dispatch('obtainCryptoData')
+    // this.$store.dispatch('getData2')
   }
 }
 </script>
@@ -90,6 +64,10 @@ export default {
 <style scoped>
 .header {
   text-align: center;
+}
+
+.home-toolbar{
+  /*background-color: #e5eaef;*/
 }
 
 img {
@@ -110,5 +88,9 @@ ons-card {
 
 ons-list-item, ons-card {
   cursor: pointer;
+}
+
+.center {
+  text-align: center;
 }
 </style>
