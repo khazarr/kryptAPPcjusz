@@ -9,14 +9,23 @@
       <div class="center">{{ msg }}</div>
     </v-ons-toolbar>
 
-    <div class="center" v-if="getLoadingStatus">
+    <v-ons-pull-hook
+      :action="loadData"
+      @changestate="pullState = $event.state"
+    >
+      <span v-show="pullState === 'initial'"> Pull to refresh </span>
+      <span v-show="pullState === 'preaction'"> Release </span>
+      <span v-show="pullState === 'action'"> Loading... </span>
+    </v-ons-pull-hook>
+
+    <div class="center" v-if="getLoadingStatus || pullState === 'action'">
       <v-ons-icon icon="ion-load-b" spin size="150px"></v-ons-icon>
     </div>
 
     <div v-if="!getLoadingStatus">
       <CurrencyInfo
-       v-for="crypto in getCryptoData"
-
+       v-for = "crypto in getCryptoData"
+       :key = "crypto.id"
        :name = "crypto.name"
        :symbol = "crypto.symbol"
        :price_usd = "crypto.price_usd"
@@ -27,7 +36,6 @@
        :last_updated = "crypto.last_updated"
       ></CurrencyInfo>
     </div>
-{{getCryptoData}}
   </v-ons-page>
 </template>
 
@@ -38,7 +46,8 @@ export default {
   name: 'home',
   data () {
     return {
-      msg: 'kryptAPPcjusz'
+      msg: 'kryptAPPcjusz',
+      pullState: 'initial'
     }
   },
   components: {
@@ -54,6 +63,18 @@ export default {
   methods: {
     goTo (url) {
       window.open(url, '_blank')
+    },
+    loadData (done) {
+      console.log('ladowanko')
+      this.$store.dispatch('obtainCryptoData')
+      console.log(this.getLoadingStatus)
+      let interval = setInterval(() => {
+        if (!this.getLoadingStatus) {
+          done()
+          clearInterval(interval)
+        }
+        console.log(this.getLoadingStatus)
+      }, 100)
     }
   }
 }

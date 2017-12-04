@@ -37,18 +37,28 @@
             </span>
           </div>
         </v-ons-list-item>
+        <v-ons-list-item>
+          <LastUpdated
+            :last_updated = "last_updated"
+            class="right last-updated"
+            ></LastUpdated>
+        </v-ons-list-item>
       </v-ons-list>
   </div>
 </v-ons-card>
 </template>
 
 <script>
+import LastUpdated from './LastUpdated.vue'
 export default {
   data () {
     return {
       isPositive1h: false,
       isPositive24h: false
     }
+  },
+  components: {
+    LastUpdated
   },
   props: [
     'name',
@@ -84,5 +94,9 @@ export default {
 .price {
   font-size: 16px;
   font-weight: 600;
+}
+.last-updated{
+  font-size: 10px;
+  opacity: 0.6;
 }
 </style>
