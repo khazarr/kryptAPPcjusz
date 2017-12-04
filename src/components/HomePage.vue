@@ -1,5 +1,5 @@
 <template>
-  <v-ons-page>
+  <v-ons-page :infinite-scroll="loadMore">
     <v-ons-toolbar class="home-toolbar">
       <div class="left">
         <v-ons-toolbar-button @click="$store.commit('splitter/toggle')">
@@ -18,7 +18,7 @@
       <span v-show="pullState === 'action'"> Loading... </span>
     </v-ons-pull-hook>
 
-    <div class="center" v-if="getLoadingStatus || pullState === 'action'">
+    <div class="center" v-show="getLoadingStatus || pullState === 'action'">
       <v-ons-icon icon="ion-load-b" spin size="150px"></v-ons-icon>
     </div>
 
@@ -36,6 +36,10 @@
        :last_updated = "crypto.last_updated"
       ></CurrencyInfo>
     </div>
+
+    <div class="after-list">
+      <v-ons-icon icon="fa-spinner" size="26px" spin></v-ons-icon>
+    </div>
   </v-ons-page>
 </template>
 
@@ -47,7 +51,8 @@ export default {
   data () {
     return {
       msg: 'kryptAPPcjusz',
-      pullState: 'initial'
+      pullState: 'initial',
+      maxIndex: 10
     }
   },
   components: {
@@ -75,6 +80,12 @@ export default {
         }
         console.log(this.getLoadingStatus)
       }, 100)
+    },
+    loadMore (done) {
+      console.log('dej wincyj')
+      this.$store.dispatch('obtainMoreCryptoData', this.maxIndex)
+      this.maxIndex += 10
+      done()
     }
   }
 }
@@ -111,6 +122,10 @@ ons-list-item, ons-card {
 }
 
 .center {
+  text-align: center;
+}
+
+.after-list{
   text-align: center;
 }
 </style>

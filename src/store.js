@@ -50,6 +50,11 @@ export default new Vuex.Store({
           state.cryptoData = payload
           console.log(state)
         },
+        concatCryptoData (state, payload) {
+          state.cryptoData = state.cryptoData.concat(payload)
+          console.log('concating')
+          console.log(state)
+        },
         setLoading (state, payload) {
           state.loading = payload
           console.log('loading: ' + payload)
@@ -68,6 +73,21 @@ export default new Vuex.Store({
               commit('setLoading', false)
             })
           commit('setLoading', false)
+        },
+        obtainMoreCryptoData ({commit}, payload) {
+          // check if data is stored in IndexedDB
+          const start = payload
+          const end = payload + 10
+          const url = `https://api.coinmarketcap.com/v1/ticker/?start=${start}&limit=${end}`
+
+          axios.get(url)
+            .then(response => {
+              console.log(response.data)
+              commit('concatCryptoData', response.data)
+            })
+            .catch(e => {
+              console.log(e)
+            })
         }
       },
       getters: {
