@@ -33,9 +33,9 @@ export default {
     const year = a.getFullYear()
     const month = months[a.getMonth()]
     const date = a.getDate()
-    const hour = a.getHours() < 9 ? '0' + a.getHours() : a.getHours()
-    const min = a.getMinutes() < 9 ? '0' + a.getMinutes() : a.getMinutes()
-    const sec = a.getSeconds() < 9 ? '0' + a.getSeconds() : a.getSeconds()
+    const hour = a.getHours() <= 9 ? '0' + a.getHours() : a.getHours()
+    const min = a.getMinutes() <= 9 ? '0' + a.getMinutes() : a.getMinutes()
+    const sec = a.getSeconds() <= 9 ? '0' + a.getSeconds() : a.getSeconds()
     this.timeString = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec
   }
 }
