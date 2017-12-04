@@ -24,7 +24,7 @@ export default new Vuex.Store({
     core: {
       state: {
         cryptoData: null,
-        loading: false,
+        loading: true,
         mockData: [
           {
             id: 'bitcoin',
@@ -62,18 +62,18 @@ export default new Vuex.Store({
           axios.get('https://api.coinmarketcap.com/v1/ticker/?limit=10')
             .then(response => {
               commit('setCryptoData', response.data)
-              commit('setLoading', false)
             })
             .catch(e => {
               console.log(e)
               commit('setLoading', false)
             })
+          commit('setLoading', false)
         }
       },
       getters: {
         getCryptoData (state) {
-          // return state.cryptoData
-          return state.mockData
+          return state.cryptoData
+          // return state.mockData
         },
         getLoadingStatus (state) {
           return state.loading

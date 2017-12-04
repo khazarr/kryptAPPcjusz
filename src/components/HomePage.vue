@@ -9,22 +9,25 @@
       <div class="center">{{ msg }}</div>
     </v-ons-toolbar>
 
-    <div class="center" v-if="!this.getLoadingStatus">
+    <div class="center" v-if="getLoadingStatus">
       <v-ons-icon icon="ion-load-b" spin size="150px"></v-ons-icon>
     </div>
-    <CurrencyInfo
-     v-for="crypto in getCryptoData"
-     :key = "crypto.id"
-     :name = "crypto.name"
-     :symbol = "crypto.symbol"
-     :price_usd = "crypto.price_usd"
-     :price_btc = "crypto.price_btc"
-     :percent_change_1h = "crypto.percent_change_1h"
-     :percent_change_24h = "crypto.percent_change_24h"
-     :percent_change_7d = "crypto.percent_change_7d"
-     :last_updated = "crypto.last_updated"
-    ></CurrencyInfo>
 
+    <div v-if="!getLoadingStatus">
+      <CurrencyInfo
+       v-for="crypto in getCryptoData"
+
+       :name = "crypto.name"
+       :symbol = "crypto.symbol"
+       :price_usd = "crypto.price_usd"
+       :price_btc = "crypto.price_btc"
+       :percent_change_1h = "crypto.percent_change_1h"
+       :percent_change_24h = "crypto.percent_change_24h"
+       :percent_change_7d = "crypto.percent_change_7d"
+       :last_updated = "crypto.last_updated"
+      ></CurrencyInfo>
+    </div>
+{{getCryptoData}}
   </v-ons-page>
 </template>
 
@@ -52,10 +55,6 @@ export default {
     goTo (url) {
       window.open(url, '_blank')
     }
-  },
-  created () {
-    // this.$store.dispatch('obtainCryptoData')
-    // this.$store.dispatch('getData2')
   }
 }
 </script>

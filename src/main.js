@@ -17,5 +17,8 @@ new Vue({
   el: '#app',
   store,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  created () {
+    this.$store.dispatch('obtainCryptoData')
+  }
 })
