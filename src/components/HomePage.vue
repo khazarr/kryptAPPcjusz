@@ -46,13 +46,15 @@
 <script>
 import CurrencyInfo from './CurrencyInfo.vue'
 import { mapGetters } from 'vuex'
+// import _ from 'lodash'
 export default {
   name: 'home',
   data () {
     return {
       msg: 'kryptAPPcjusz',
       pullState: 'initial',
-      maxIndex: 10
+      maxIndex: 10,
+      minIndex: 0
     }
   },
   components: {
@@ -83,9 +85,20 @@ export default {
     },
     loadMore (done) {
       console.log('dej wincyj')
-      this.$store.dispatch('obtainMoreCryptoData', this.maxIndex)
+      this.debounce(this.$store.dispatch('obtainMoreCryptoData', this.maxIndex), 1000)
       this.maxIndex += 10
       done()
+    },
+    debounce (fn, wait) {
+      let timeout
+      return function () {
+        let ctx = this
+        let args = arguments
+        clearTimeout(timeout)
+        timeout = setTimeout(function () {
+          fn.apply(ctx, args)
+        }, wait || 100)
+      }
     }
   }
 }
